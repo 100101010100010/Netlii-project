@@ -20,3 +20,11 @@ Welcome to Netlii, my flagship gaming website.
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/chilicheesemonkey/netlii-games)
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/chilicheesemonkey/netlii-games)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/chilicheesemonkey/netlii-games)
+
+## Credits
+- 3kh0 lite for the games and alot of the framework
+- rhenryw for uv static v2 (thx bro :D )
+- UGS (ultimate game stash) for a lot of the games
+- Destroyed12121 for the static scramjet code (that i modded to be NEXUS)
+- gointerstellar/useinterstellar (where this whole idea started)
+- and finally bubbergamesites/0K3A, my first game site
