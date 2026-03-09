@@ -8,40 +8,92 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* BASE STYLES & BACKGROUND */
-        /* UPDATED GLOBAL BACKGROUND STYLE */
-html, body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    font-family: 'Nunito', sans-serif;
-    /* This sets your uploaded image as the fixed background for every page */
-    background: url('netlii-bg.avif') no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #000; /* Monochrome text to match the new background */
-}
+        :root {
+            --text-color: #1a1a1a;
+            --container-bg: rgba(255, 255, 255, 0.4);
+            --body-bg: #f4f4f4;
+            --bg-image: none;
+            --input-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Dark Mode variables and background image */
+        [data-theme="dark"] {
+            --text-color: #ffffff;
+            --container-bg: rgba(0, 0, 0, 0.6);
+            --body-bg: #121212;
+            --bg-image: url('netlii-bg 2.avif');
+            --input-bg: rgba(255, 255, 255, 0.9);
+        }
+
         html, body {
             margin: 0;
             padding: 0;
             min-height: 100vh;
             font-family: 'Nunito', sans-serif;
-            background: url('netlii-bg.avif') no-repeat center center fixed;
+            background-color: var(--body-bg);
+            background-image: var(--bg-image);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
             background-size: cover;
-            color: #000;
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: var(--text-color);
+            transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* TOP BRANDING (Matching Sketch) */
-        .header {
-            margin-top: 40px;
-            text-align: center;
+        /* Theme Toggle Styling */
+        .theme-switch-wrapper {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
         }
 
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; width: 18px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider { background-color: #2196F3; }
+        input:checked + .slider:before { transform: translateX(26px); }
+
+        .mode-label {
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-color);
+        }
+
+        .header { margin-top: 40px; text-align: center; }
         .header h1 {
             font-size: 3.5rem;
             margin: 0;
@@ -50,14 +102,14 @@ html, body {
             text-transform: uppercase;
         }
         .header h2 {
-            font-size: 3rem;
-            margin: 0;
-            letter-spacing: 12px;
-            font-weight: 900;
+            font-size: 2.5rem;
+            margin: 10px 0 0 0;
+            letter-spacing: 8px;
+            font-weight: 700;
             text-transform: uppercase;
+            opacity: 0.8;
         }
 
-        /* SEARCH BAR (Pill Shape from Sketch) */
         .search-container {
             width: 90%;
             max-width: 600px;
@@ -68,16 +120,16 @@ html, body {
             width: 100%;
             height: 3.5rem;
             border-radius: 50px;
-            border: 2px solid #000;
+            border: 2px solid var(--text-color);
             padding: 0 30px;
             font-size: 1.1rem;
             outline: none;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: var(--input-bg);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
 
-        /* GAME GRID */
         .flex-container {
             display: flex;
             flex-wrap: wrap;
@@ -85,65 +137,52 @@ html, body {
             gap: 25px;
             padding: 20px;
             max-width: 1200px;
+            margin-bottom: 120px; 
         }
 
-        .game-link {
-            text-decoration: none;
-            transition: transform 0.3s ease;
-        }
+        .game-link { text-decoration: none; transition: transform 0.3s ease; }
+        .game-link:hover { transform: translateY(-10px); }
 
-        .game-link:hover {
-            transform: translateY(-10px);
-        }
-
-        /* Modern Tile Design */
         .game-tile {
-            background: rgba(255, 255, 255, 0.4);
+            background: var(--container-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             width: 260px;
             border-radius: 25px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: background 0.4s ease;
         }
 
-        .game-icon {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
+        .game-icon { width: 100%; height: 200px; object-fit: cover; }
         .game-title {
             font-size: 1.2rem;
             font-weight: 800;
-            color: #000;
+            color: var(--text-color);
             text-align: center;
             padding: 20px 10px;
             margin: 0;
         }
 
-.bottom-nav {
-    position: relative; /* Changed from fixed to relative */
-    margin-top: auto;   /* Pushes it away from the content above */
-    margin-bottom: 30px; /* Space between the bar and the very end of the page */
-    left: 0;
-    transform: none;    /* Centering is now handled by the body's flex alignment */
-    display: flex;
-    gap: 40px;
-    background: rgba(255, 255, 255, 0.4); 
-    padding: 15px 40px;
-    border-radius: 50px;
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
+        .bottom-nav {
+            position: fixed;
+            bottom: 30px;
+            display: flex;
+            gap: 40px;
+            background: var(--container-bg);
+            padding: 15px 40px;
+            border-radius: 50px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
 
         .nav-item {
             text-decoration: none;
-            color: #000;
+            color: var(--text-color);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -157,7 +196,7 @@ html, body {
         .circle {
             width: 45px;
             height: 45px;
-            border: 2px solid #000;
+            border: 2px solid var(--text-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -167,10 +206,9 @@ html, body {
             background: white;
         }
 
-        /* Loader */
         #loader {
             border: 5px solid #f3f3f3;
-            border-top: 5px solid #000;
+            border-top: 5px solid var(--text-color);
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -178,26 +216,23 @@ html, body {
             margin: 50px auto;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media screen and (max-width: 600px) {
-            .header h1 { font-size: 2rem; }
-            .bottom-nav { gap: 15px; padding: 10px 20px; }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>NETLII</h1>       
-    </div>
-    <div class="header">
-        <h2>Games</h2>       
+    <div class="theme-switch-wrapper">
+        <span class="mode-label">Dark Mode</span>
+        <label class="switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+        </label>
     </div>
 
+    <div class="header">
+        <h1>NETLII</h1>
+        <h2>Games</h2>       
+    </div>
 
     <div class="search-container">
         <input type="text" id="search" onkeyup="searchGames()" placeholder="Search Games..." />
@@ -207,60 +242,72 @@ html, body {
     <div id="game-container" class="flex-container"></div>
 
     <div class="bottom-nav">
-        <a href="./home" class="nav-item">
-            <div class="circle">🏠</div>
-            <span>HOME</span>
-        </a>
-        <a href="./apps" class="nav-item">
-            <div class="circle">📱</div>
-            <span>APPS</span>
-        </a>
-        <a href="./misc" class="nav-item">
-            <div class="circle">⚙️</div>
-            <span>SETTINGS</span>
-        </a>
-        <a href="./movies/" class="nav-item">
-            <div class="circle">🍿</div>
-            <span>MOVIES</span>
-        </a>
+        <a href="./apps" class="nav-item"><div class="circle">📱</div><span>APPS</span></a>
+        <a href="./home" class="nav-item"><div class="circle">🏠</div><span>HOME</span></a>
+        <a href="./misc" class="nav-item"><div class="circle">⚙️</div><span>SETTINGS</span></a>
+        <a href="./movies/" class="nav-item"><div class="circle">🍿</div><span>MOVIES</span></a>
     </div>
 
     <script>
-      let games = [];
-      fetch("config/games.json")
-      .then((response) => response.json())
-      .then((data) => {
-        games = data;
-        renderGames(data);
-        document.getElementById("loader").style.display = "none";
-      })
-      .catch((error) => {
-          console.error("Error:", error);
-          document.getElementById("loader").style.display = "none";
-      });
+        // Theme Toggle Logic
+        const toggleSwitch = document.querySelector('#theme-toggle');
+        
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }    
+        }
 
-      function renderGames(data) {
-        const container = document.getElementById("game-container");
-        container.innerHTML = "";
-        data.forEach((project) => {
-          const game = document.createElement("a");
-          game.href = project.link;
-          game.className = "game-link";
-          game.innerHTML = `
-            <div class="game-tile">
-              <img class="game-icon" src="${project.imgSrc}" alt="icon" loading="lazy" />
-              <p class="game-title">${project.title}</p>
-            </div>`;
-          container.appendChild(game);
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            if (currentTheme === 'dark') {
+                toggleSwitch.checked = true;
+            }
+        }
+
+        // Game Loading Logic
+        let games = [];
+        fetch("config/games.json")
+        .then((response) => response.json())
+        .then((data) => {
+            games = data;
+            renderGames(data);
+            document.getElementById("loader").style.display = "none";
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            document.getElementById("loader").style.display = "none";
         });
-      }
 
-      function searchGames() {
-        const input = document.getElementById("search");
-        const filter = input.value.toUpperCase();
-        const filtered = games.filter((game) => game.title.toUpperCase().includes(filter));
-        renderGames(filtered);
-      }
+        function renderGames(data) {
+            const container = document.getElementById("game-container");
+            container.innerHTML = "";
+            data.forEach((project) => {
+                const game = document.createElement("a");
+                game.href = project.link;
+                game.className = "game-link";
+                game.innerHTML = `
+                    <div class="game-tile">
+                        <img class="game-icon" src="${project.imgSrc}" alt="icon" loading="lazy" />
+                        <p class="game-title">${project.title}</p>
+                    </div>`;
+                container.appendChild(game);
+            });
+        }
+
+        function searchGames() {
+            const input = document.getElementById("search");
+            const filter = input.value.toUpperCase();
+            const filtered = games.filter((game) => game.title.toUpperCase().includes(filter));
+            renderGames(filtered);
+        }
     </script>
 </body>
 </html>
