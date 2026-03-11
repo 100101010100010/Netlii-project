@@ -233,6 +233,29 @@
             }
         });
     </script>
-    <script src="projects/Nexus-Proxy/script.js">
+<script src="https://cdn.jsdelivr.net/gh/Destroyed12121/Staticsj@main/JS/scramjet.all.js" defer></script>
+
+<script type="module">
+    import * as BareMux from "https://cdn.jsdelivr.net/npm/@mercuryworkshop/bare-mux/dist/index.mjs";
+    window.BareMux = BareMux;
+
+    async function init() {
+        if ('serviceWorker' in navigator) {
+            try {
+                // Point this to where your sw.js actually lives
+                await navigator.serviceWorker.register('/projects/Nexus-Proxy/sw.js', { scope: './' });
+                
+                const conn = new BareMux.BareMuxConnection("/projects/Nexus-Proxy/bareworker.js");
+                await conn.setTransport("./bareworker.js", [{ wisp: "wss://wisp.mercurywork.shop/" }]);
+                
+                window.proxyReady = true;
+                console.log("Nexus Engine Initialized");
+            } catch (err) {
+                console.error("Worker failed:", err);
+            }
+        }
+    }
+    init();
+</script>
 </body>
 </html>
