@@ -1,6 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <head>
+    <script type="module">
+        import * as BareMux from "https://cdn.jsdelivr.net/npm/@mercuryworkshop/bare-mux/dist/index.mjs";
+        window.BareMux = BareMux;
+    </script>
+
+    <script>
+        async function preInitProxy() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    // Register the worker
+                    const reg = await navigator.serviceWorker.register('/Nexus-Proxy/sw.js', {
+                        scope: './'
+                    });
+                    
+                    // Warm up the connection to the WISP server
+                    if (window.BareMux) {
+                        const conn = new window.BareMux.BareMuxConnection("/Nexus-Proxy/bareworker.js");
+                        const wispUrl = localStorage.getItem("proxServer") || "wss://glseries.net/wisp/";
+                        
+                        await conn.setTransport(
+                            "https://cdn.jsdelivr.net/npm/@mercuryworkshop/epoxy-transport@2.1.28/dist/index.mjs", 
+                            [{ wisp: wispUrl }]
+                        );
+                        console.log("Proxy pre-initialized from <head>");
+                    }
+                } catch (err) {
+                    console.error("Proxy pre-init failed:", err);
+                }
+            }
+        }
+        preInitProxy();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
