@@ -8,6 +8,27 @@
     </script>
 
     <script>
+        async function registerAndConfig() {
+    const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+    
+    const wispUrl = localStorage.getItem("proxServer") || "wss://wisp.mercurywork.shop/";
+    const config = {
+        type: "config",
+        wispurl: wispUrl,
+        autoswitch: true
+    };
+
+    // Function to poke the worker until it wakes up
+    const poke = () => {
+        if (navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage(config);
+        }
+    };
+
+    poke();
+    setTimeout(poke, 500);  // Retry after half a second
+    setTimeout(poke, 2000); // Retry again
+}
         async function preInitProxy() {
             if ('serviceWorker' in navigator) {
                 try {
