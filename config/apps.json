@@ -1,20 +1,5 @@
 [
    {
-    "link":  "https://drive.google.com/uc?export=download&id=1ySqDVvHiC_2nCckOKTHKtzlELTvVV8OW",
-    "imgSrc": "projects/download.png",
-    "title": "Download Netlii (alt)"
-  },
-   {
-    "link":  "https://drive.google.com/uc?export=download&id=1754Nv4OVesQlqi3Vg9ITqATHsNfiaJsu",
-    "imgSrc": "projects/download.png",
-    "title": "Download Netlii"
-  },
-   {
-    "link":  "Nexus-Proxy/",
-    "imgSrc": "Nexus-Proxy/749.png",
-    "title": "Nexus Proxy"
-  },
-   {
     "link":   "apps/Applii",
     "imgSrc": "https://cdn-icons-png.flaticon.com/512/9073/9073363.png",
     "title": "Netlii Apps"
