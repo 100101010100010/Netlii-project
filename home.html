@@ -119,7 +119,6 @@
             --bg-image: url('netlii-bg.avif');
         }
 
-        /* Dark Mode overrides */
         [data-theme="dark"] {
             --text-color: #ffffff;
             --container-bg: rgba(0, 0, 0, 0.6);
@@ -331,6 +330,30 @@ homeSearch.addEventListener('keypress', (e) => {
         }
     }
 });
+   </script>
+   <script>
+             // Theme Toggle Logic
+        const toggleSwitch = document.querySelector('#theme-toggle');
+        
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }    
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            if (currentTheme === 'dark') {
+                toggleSwitch.checked = true;
+            }
+        }
    </script>
 </body>
 </html>
