@@ -6,16 +6,6 @@
     "title": "Nexus Proxy"
   },
    {
-    "link":   "apps/Applii",
-    "imgSrc": "https://cdn-icons-png.flaticon.com/512/9073/9073363.png",
-    "title": "Netlii Apps"
-  },
-   {
-    "link": "/apps/ti84/",
-    "imgSrc": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Calculator_%28iOS_26%29_app_icon.png",
-    "title": "Graphing Calculator (ti84)"
-  },
-   {
     "link": "Nexus-Proxy/embed#https://luna.amazon.com",
     "imgSrc": "apps/IMG_4051.png",
     "title": "Amazon Luna"
@@ -75,6 +65,11 @@
     "link": "Nexus-Proxy/embed#https://y8.com",
     "imgSrc": "/apps/IMG_4052.png",
     "title": "Y8 Games"
+  },
+   {
+    "link": "/apps/ti84/",
+    "imgSrc": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Calculator_%28iOS_26%29_app_icon.png",
+    "title": "Graphing Calculator"
   },
   {
     "link": "Nexus-Proxy/embed#https://play.fancade.com",
