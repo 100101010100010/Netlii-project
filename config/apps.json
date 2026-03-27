@@ -1,13 +1,8 @@
 [
    {
-    "link":   "apps/Applii",
-    "imgSrc": "https://cdn-icons-png.flaticon.com/512/9073/9073363.png",
-    "title": "Netlii Apps"
-  },
-   {
-    "link": "/apps/ti84/",
-    "imgSrc": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Calculator_%28iOS_26%29_app_icon.png",
-    "title": "Graphing Calculator (ti84)"
+    "link": "/Nexus-Proxy/",
+    "imgSrc": "/Nexus-Proxy/749.png",
+    "title": "Nexus Proxy"
   },
    {
     "link": "Nexus-Proxy/embed#https://luna.amazon.com",
@@ -84,6 +79,11 @@
     "link": "Nexus-Proxy/embed#https://disneyplus.com",
     "imgSrc": "apps/disneyplus.jpg",
     "title": "Disney Plus"
+  },
+   {
+    "link": "/apps/ti84/",
+    "imgSrc": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Calculator_%28iOS_26%29_app_icon.png",
+    "title": "Graphing Calculator (ti84)"
   },
    {
     "link": "Nexus-Proxy/embed#https://netflix.com",
