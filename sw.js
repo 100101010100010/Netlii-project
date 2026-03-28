@@ -1,4 +1,10 @@
+self.addEventListener('install', () => {
+    self.skipWaiting();
+});
 
+self.addEventListener('activate', (event) => {
+    event.waitUntil(clients.claim());
+});
 const ADBLOCK = {
     blocked: [
   "googlevideo.com/videoplayback",
@@ -239,21 +245,39 @@ self.addEventListener("message", ({ data }) => {
 });
 
 self.addEventListener("fetch", (event) => {
+    const url = new URL(event.request.url);
+
+    // FIX: Bypass the proxy for internal setup files and CDNs
+    // This allows bare-mux and scramjet to load their dependencies without deadlocking
+    if (
+        url.pathname.includes('sw.js') || 
+        url.pathname.includes('bareworker.js') || 
+        url.hostname.includes('cdn.jsdelivr.net') ||
+        url.hostname.includes('github.com') ||
+        url.pathname.endsWith('.wasm')
+    ) {
+        return; // Let the browser handle these normally
+    }
+
     event.respondWith((async () => {
-        // Check if request URL matches ad blocking patterns
         if (isAdBlocked(event.request.url)) {
-            console.log("SW: Blocked ad request:", event.request.url);
-            return new Response(new ArrayBuffer(0), { status: 204 });
+            return new Response(null, { status: 204 });
         }
 
-        await scramjet.loadConfig();
-        if (scramjet.route(event)) {
-            return scramjet.fetch(event);
+        try {
+            await scramjet.loadConfig();
+            // Only route through Scramjet if it's a proxy request
+            if (scramjet.route(event)) {
+                return await scramjet.fetch(event);
+            }
+        } catch (err) {
+            console.error("Scramjet Route Error:", err);
         }
+        
+        // Default: allow normal site navigation (Games, Apps, etc.)
         return fetch(event.request);
     })());
 });
-
 scramjet.addEventListener("request", async (e) => {
     e.response = (async () => {
         await configReadyPromise;
