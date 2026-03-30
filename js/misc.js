@@ -79,7 +79,7 @@ document.getElementById("create").onclick = function () {
     return;
   }
 
-  const proxyUrl = `${window.location.origin}/projects/Nexus-Proxy/embed#${userValue}`;
+  const proxyUrl = `${window.location.origin}/Nexus-Proxy/embed#${userValue}`;
   const d = win.document;
   d.body.style.margin = "0";
   d.body.style.overflow = "hidden";
