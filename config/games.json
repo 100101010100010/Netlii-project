@@ -777,6 +777,11 @@
     "imgSrc": "/projects/sand-game/sand.png",
     "title": "Sand Game"
   },
+   {
+    "link": "/projects/shellshockers/",
+    "imgSrc": "/projects/shellshockers/shellshock.jpg",
+    "title": "Sand Game"
+  },
   {
     "link": "/projects/shredsauce/",
     "imgSrc": "/projects/shredsauce/shredsauce.png",
