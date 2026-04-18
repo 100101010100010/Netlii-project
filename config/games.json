@@ -360,6 +360,11 @@
     "imgSrc": "/projects/endlesswar3/endlesswar3.png",
     "title": "Endless War 3"
   },
+   {
+    "link": "/projects/escaperoad/",
+    "imgSrc": "/projects/escaperoad/escape-road.png",
+    "title": "Escape Road"
+  },
   {
     "link": "/projects/etc/",
     "imgSrc": "/projects/etc/escapingtheprison.webp",
