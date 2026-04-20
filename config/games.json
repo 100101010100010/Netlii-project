@@ -807,6 +807,11 @@
     "imgSrc": "/projects/snowrider3d/sn3d.png",
     "title": "Snow rider 3D"
   },
+   {
+    "link": "/projects/squarerace/",
+    "imgSrc": "/projects/squarerace/squarerace.png",
+    "title": "Square Race: Arcade Edition"
+  },
   {
     "link": "/projects/sm64/",
     "imgSrc": "/projects/sm64/logo.png",
