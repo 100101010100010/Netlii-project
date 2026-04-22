@@ -49,11 +49,7 @@
     "imgSrc": "/projects/avalanche/avalanche.png",
     "title": "Avalanche"
   },
-  {
-    "link": "/projects/BR0WS3R/",
-    "imgSrc": "/projects/BR0WS3R/logo.png",
-    "title": "BubberBrowser"
-  },
+  
   {
     "link": "/projects/backrooms/",
     "imgSrc": "/projects/backrooms/img/splash.jpg",
@@ -73,6 +69,11 @@
     "link": "/projects/basketball-stars/",
     "imgSrc": "/projects/basketball-stars/assets/images/basketball-stars.png",
     "title": "Basketball Stars"
+  },
+    {
+    "link": "/projects/basketbros/",
+    "imgSrc": "/projects/basketbros/logo.png",
+    "title": "Basket Bros"
   },
   {
     "link": "/projects/battleforgondor/",
@@ -118,6 +119,11 @@
     "link": "/projects/bloxors/",
     "imgSrc": "/projects/bloxors/block.png",
     "title": "Bloxors"
+  },
+   {
+    "link": "/projects/BR0WS3R/",
+    "imgSrc": "/projects/BR0WS3R/logo.png",
+    "title": "BubberBrowser"
   },
   {
     "link": "/projects/boxhead2play/",
@@ -451,6 +457,11 @@
     "imgSrc": "/projects/glass-city/image.png",
     "title": "Glass City"
   },
+   {
+    "link": "/projects/gdbaseball/",
+    "imgSrc": "/projects/gdbaseball/gdbaseball.jpg",
+    "title": "Google Doodle Baseball"
+  },
   {
     "link": "/projects/google-snake/",
     "imgSrc": "/projects/google-snake/img/snake.png",
@@ -535,6 +546,11 @@
     "link": "/projects/just-one-boss/",
     "imgSrc": "/projects/just-one-boss/pv1Gr5.png",
     "title": "Just One Boss"
+  },
+   {
+    "link": "/projects/kartbros/",
+    "imgSrc": "/projects/kartbros/kart-bros.jpg",
+    "title": "Kart Bros"
   },
   {
     "link": "/projects/kittencannon/",
