@@ -1,9 +1,9 @@
-self.addEventListener('install', () => {
-    self.skipWaiting();
+self.addEventListener('install', (event) => {
+    event.waitUntil(self.skipWaiting()); // Force activation
 });
 
 self.addEventListener('activate', (event) => {
-    event.waitUntil(clients.claim());
+    event.waitUntil(clients.claim()); // Take control of page immediately
 });
 const ADBLOCK = {
     blocked: [
