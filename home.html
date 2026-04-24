@@ -1,59 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <head>
     <script type="module">
-    import * as BareMux from "https://cdn.jsdelivr.net/npm/@mercuryworkshop/bare-mux/dist/index.mjs";
-    window.BareMux = BareMux;
-</script>
-<script>
-async function setupProxy() {
-    if (!('serviceWorker' in navigator)) return;
+        import * as BareMux from "https://cdn.jsdelivr.net/npm/@mercuryworkshop/bare-mux/dist/index.mjs";
+        window.BareMux = BareMux;
+    </script>
 
-    try {
-        const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
-        
-        // Wait for the SW to be fully ready
-        await navigator.serviceWorker.ready;
+    <script>
+        async function setupProxy() {
+            if (!('serviceWorker' in navigator)) return;
 
-        // Function to send the configuration
-        const sendConfig = () => {
-            if (navigator.serviceWorker.controller && window.BareMux) {
-                const wispUrl = localStorage.getItem("proxServer") || "wss://wisp.mercurywork.shop";
-                const cleanWisp = wispUrl.endsWith('/') ? wispUrl.slice(0, -1) : wispUrl;
+            try {
+                // 1. Register the Service Worker once
+                const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+                
+                // 2. Wait for the SW to be fully active before talking to it
+                await navigator.serviceWorker.ready;
 
-                navigator.serviceWorker.controller.postMessage({
-                    type: "config",
-                    wispurl: cleanWisp,
-                    autoswitch: true
-                });
-                console.log("NETLII: Config sent to receiving end.");
+                const sendConfig = () => {
+                    // Check if the "Receiving End" (controller) and BareMux are ready
+                    if (navigator.serviceWorker.controller && window.BareMux) {
+                        const wispUrl = localStorage.getItem("proxServer") || "wss://wisp.mercurywork.shop/";
+                        const cleanWisp = wispUrl.endsWith('/') ? wispUrl.slice(0, -1) : wispUrl;
+
+                        // Initialize the BareMux connection
+                        const conn = new window.BareMux.BareMuxConnection("./bareworker.js");
+                        conn.setTransport("https://cdn.jsdelivr.net/npm/@mercuryworkshop/epoxy-transport@2.1.28/dist/index.mjs", [{ wisp: cleanWisp }]);
+
+                        // Send config to the SW
+                        navigator.serviceWorker.controller.postMessage({
+                            type: "config",
+                            wispurl: cleanWisp,
+                            autoswitch: true
+                        });
+                        console.log("NETLII: Proxy Initialized Successfully");
+                    }
+                };
+
+                // 3. Handle the controller lifecycle to avoid "Receiving end does not exist"
+                if (!navigator.serviceWorker.controller) {
+                    // If no controller yet, wait for the worker to take over
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        sendConfig();
+                        window.location.reload(); // Force reload to ensure traffic is proxied
+                    });
+                } else {
+                    sendConfig();
+                }
+
+            } catch (err) {
+                // Ignore InvalidStateError during rapid refreshes
+                if (err.name !== 'InvalidStateError') {
+                    console.error("Proxy Setup Error:", err);
+                }
             }
-        };
-
-        // If the controller is already there, send it
-        if (navigator.serviceWorker.controller) {
-            sendConfig();
-        } else {
-            // If the receiving end doesn't exist yet, wait for it to take over
-            navigator.serviceWorker.addEventListener('controllerchange', () => {
-                console.log("NETLII: New controller detected!");
-                sendConfig();
-                // Optional: reload to ensure the proxy is active for all requests
-                window.location.reload();
-            });
         }
 
-    } catch (err) {
-        if (err.name === 'InvalidStateError') {
-            // Just ignore this; the next page load/tick will handle it
-            return;
-        }
-        console.error("Setup Error:", err);
-    }
-}
-
-window.addEventListener('load', setupProxy);
-</script>
+        // Run setup when the window loads
+        window.addEventListener('load', setupProxy);
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
