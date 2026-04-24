@@ -7,31 +7,28 @@
 </script>
 
 <script>
-   async function setupProxy() {
-    // Check if the document is still active to avoid InvalidStateError
-    if (!navigator.serviceWorker || document.readyState === 'loading') {
-        return;
-    }
+  async function setupProxy() {
+    if (!('serviceWorker' in navigator)) return;
 
     try {
-        // Small delay to ensure the document state is stable
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        // 1. Register the Service Worker
-        const reg = await navigator.serviceWorker.register('./sw.js', { 
-            scope: './',
-            updateViaCache: 'none' // Ensures you get the latest sw.js code
-        });
+        // 1. Register the worker
+        const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
         
-        console.log("SW Registered in scope:", reg.scope);
+        // 2. Wait for the registration to be ready
+        await navigator.serviceWorker.ready;
 
-        // 2. Wait for the service worker to be ready
-        const registration = await navigator.serviceWorker.ready;
-        
-        // 3. Initialize BareMux only if the controller is active
-        if (window.BareMux && navigator.serviceWorker.controller) {
+        // 3. Ensure we have a controller (the "Receiving End")
+        // If it's null, we wait for the 'controllerchange' event or force a reload
+        if (!navigator.serviceWorker.controller) {
+            console.log("No controller yet. Waiting or reloading...");
+            // This forces the page to reload once to ensure the SW takes over
+            window.location.reload();
+            return;
+        }
+
+        // 4. Initialize BareMux
+        if (window.BareMux) {
             const conn = new window.BareMux.BareMuxConnection("./bareworker.js");
-            
             let wispUrl = localStorage.getItem("proxServer") || "wss://wisp.mercurywork.shop";
             if (wispUrl.endsWith('/')) wispUrl = wispUrl.slice(0, -1);
             
@@ -40,30 +37,27 @@
                 [{ wisp: wispUrl }]
             );
 
-            navigator.serviceWorker.controller.postMessage({
-                type: "config",
-                wispurl: wispUrl,
-                autoswitch: true
-            });
-            
-            console.log("NETLII Proxy: Fully Initialized");
-        } else {
-            // If there is no controller, reload once to let the SW take over
-            console.warn("SW registered but not controlling. Reloading...");
-            window.location.reload();
+            // 5. Safely send the message
+            // We check controller again to be 100% sure the "receiving end" exists
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: "config",
+                    wispurl: wispUrl,
+                    autoswitch: true
+                });
+                console.log("NETLII: Connection established and config sent.");
+            }
         }
     } catch (err) {
-        // Catch the specific error and try to ignore it if it's just a state issue
         if (err.name === 'InvalidStateError') {
-            console.warn("Document in invalid state, skipping this attempt.");
+            console.warn("Document state unstable; the browser likely blocked registration during a refresh.");
         } else {
-            console.error("Proxy Setup Failed:", err);
+            console.error("Setup Error:", err);
         }
     }
 }
 
-// Use 'DOMContentLoaded' instead of 'load' for faster, more stable execution
-window.addEventListener('DOMContentLoaded', setupProxy);
+window.addEventListener('load', setupProxy);
 </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
