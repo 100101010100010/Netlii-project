@@ -5,55 +5,50 @@
     import * as BareMux from "https://cdn.jsdelivr.net/npm/@mercuryworkshop/bare-mux/dist/index.mjs";
     window.BareMux = BareMux;
 </script>
-
 <script>
-  async function setupProxy() {
+async function setupProxy() {
     if (!('serviceWorker' in navigator)) return;
 
     try {
-        // 1. Register the worker
         const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
         
-        // 2. Wait for the registration to be ready
+        // Wait for the SW to be fully ready
         await navigator.serviceWorker.ready;
 
-        // 3. Ensure we have a controller (the "Receiving End")
-        // If it's null, we wait for the 'controllerchange' event or force a reload
-        if (!navigator.serviceWorker.controller) {
-            console.log("No controller yet. Waiting or reloading...");
-            // This forces the page to reload once to ensure the SW takes over
-            window.location.reload();
-            return;
-        }
+        // Function to send the configuration
+        const sendConfig = () => {
+            if (navigator.serviceWorker.controller && window.BareMux) {
+                const wispUrl = localStorage.getItem("proxServer") || "wss://wisp.mercurywork.shop";
+                const cleanWisp = wispUrl.endsWith('/') ? wispUrl.slice(0, -1) : wispUrl;
 
-        // 4. Initialize BareMux
-        if (window.BareMux) {
-            const conn = new window.BareMux.BareMuxConnection("./bareworker.js");
-            let wispUrl = localStorage.getItem("proxServer") || "wss://wisp.mercurywork.shop";
-            if (wispUrl.endsWith('/')) wispUrl = wispUrl.slice(0, -1);
-            
-            await conn.setTransport(
-                "https://cdn.jsdelivr.net/npm/@mercuryworkshop/epoxy-transport@2.1.28/dist/index.mjs", 
-                [{ wisp: wispUrl }]
-            );
-
-            // 5. Safely send the message
-            // We check controller again to be 100% sure the "receiving end" exists
-            if (navigator.serviceWorker.controller) {
                 navigator.serviceWorker.controller.postMessage({
                     type: "config",
-                    wispurl: wispUrl,
+                    wispurl: cleanWisp,
                     autoswitch: true
                 });
-                console.log("NETLII: Connection established and config sent.");
+                console.log("NETLII: Config sent to receiving end.");
             }
+        };
+
+        // If the controller is already there, send it
+        if (navigator.serviceWorker.controller) {
+            sendConfig();
+        } else {
+            // If the receiving end doesn't exist yet, wait for it to take over
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                console.log("NETLII: New controller detected!");
+                sendConfig();
+                // Optional: reload to ensure the proxy is active for all requests
+                window.location.reload();
+            });
         }
+
     } catch (err) {
         if (err.name === 'InvalidStateError') {
-            console.warn("Document state unstable; the browser likely blocked registration during a refresh.");
-        } else {
-            console.error("Setup Error:", err);
+            // Just ignore this; the next page load/tick will handle it
+            return;
         }
+        console.error("Setup Error:", err);
     }
 }
 
