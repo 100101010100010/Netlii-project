@@ -427,6 +427,11 @@
     "imgSrc": "/projects/flashtetris/flashtetris.png",
     "title": "Flash Tetris"
   },
+   {
+    "link": "/projects/fortzone/",
+    "imgSrc": "/projects/fortzone/download (2).jpg",
+    "title": "Fortzone Battle Royale"
+  },
   {
     "link": "/projects/funnyshooter/",
     "imgSrc": "/projects/funnyshooter/fs2.png",
