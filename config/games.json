@@ -668,6 +668,11 @@
     "imgSrc": "/projects/ns-shaft/favicon.png",
     "title": "NS-Shaft"
   },
+   {
+    "link": "/projects/obbycart/",
+    "imgSrc": "/projects/obbycart/images.jpg",
+    "title": "Obby in a minecart"
+  },
   {
     "link": "/projects/om-bounce/",
     "imgSrc": "/projects/om-bounce/assets/icon.jpeg",
@@ -737,11 +742,6 @@
     "link": "/projects/racemaster3d/",
     "imgSrc": "/projects/racemaster3d/logo.jpg",
     "title": "Race Master 3D"
-  },
-   {
-    "link": "/projects/racemaster3d/alt",
-    "imgSrc": "/projects/racemaster3d/logo.jpg",
-    "title": "Race Master 3D (alt)"
   },
   {
     "link": "/projects/rubikscube/",
@@ -977,6 +977,11 @@
     "link": "/projects/tube-jumpers/",
     "imgSrc": "/projects/tube-jumpers/img/shark.jpg",
     "title": "Tube Jumpers"
+  },
+   {
+    "link": "/projects/tungobby/",
+    "imgSrc": "/projects/tungobby/tts.jpeg",
+    "title": "Tung Tung Sahur Obby"
   },
   {
     "link": "/projects/tunnel-rush/",
