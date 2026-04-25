@@ -181,6 +181,11 @@
     "imgSrc": "/projects/cell-machine/img/te9nDu.png",
     "title": "Cell Machine"
   },
+   {
+    "link": "/projects/celeste/",
+    "imgSrc": "/projects/celeste/images (1).jpg",
+    "title": "Celeste (Port)"
+  },
   {
     "link": "/projects/championarcher/",
     "imgSrc": "/projects/championarcher/championarcher.png",
@@ -336,11 +341,6 @@
     "imgSrc": "/projects/ducklife1/ducklife.png",
     "title": "Duck Life"
   },
-   {
-    "link": "/projects/ducklings/",
-    "imgSrc": "/projects/ducklings/ducky.png",
-    "title": "Ducklings io"
-  },
   {
     "link": "/projects/ducklife2/",
     "imgSrc": "/projects/ducklife2/ducklife2.png",
@@ -350,6 +350,11 @@
     "link": "/projects/ducklife3/",
     "imgSrc": "/projects/ducklife3/duck.png",
     "title": "Duck Life 3"
+  },
+   {
+    "link": "/projects/ducklings/",
+    "imgSrc": "/projects/ducklings/ducky.png",
+    "title": "Ducklings io"
   },
   {
     "link": "/projects/edgenotfound/",
@@ -727,6 +732,11 @@
     "link": "/projects/particle-clicker/",
     "imgSrc": "/projects/particle-clicker/assets/mobile/original.png",
     "title": "Particle Clicker"
+  },
+   {
+    "link": "/projects/peopleplayground/",
+    "imgSrc": "/projects/peopleplayground/images.png",
+    "title": "People Playground"
   },
   {
     "link": "/projects/polybranch/",
