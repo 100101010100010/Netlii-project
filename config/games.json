@@ -336,6 +336,11 @@
     "imgSrc": "/projects/ducklife1/ducklife.png",
     "title": "Duck Life"
   },
+   {
+    "link": "/projects/ducklings/",
+    "imgSrc": "/projects/ducklings/ducky.png",
+    "title": "Ducklings io"
+  },
   {
     "link": "/projects/ducklife2/",
     "imgSrc": "/projects/ducklife2/ducklife2.png",
@@ -467,6 +472,11 @@
     "imgSrc": "/projects/grindcraft/img/splash.png",
     "title": "Grind Craft"
   },
+   {
+    "link": "/projects/gunspin/",
+    "imgSrc": "/projects/gunspin/download (1).jpg",
+    "title": "Gunspin"
+  },
   {
     "link": "/projects/hackertype/",
     "imgSrc": "/projects/hackertype/logo192.png",
@@ -501,6 +511,11 @@
     "link": "/projects/hextris/",
     "imgSrc": "/projects/hextris/images/hextris-logo.png",
     "title": "Hextris"
+  },
+   {
+    "link": "/projects/holeio/",
+    "imgSrc": "/projects/holeio/download.jpg",
+    "title": "Hole io"
   },
   {
     "link": "/projects/clicypurplehead/",
