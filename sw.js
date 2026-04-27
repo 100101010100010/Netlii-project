@@ -279,6 +279,11 @@ self.addEventListener("fetch", (event) => {
     })());
 });
 scramjet.addEventListener("request", async (e) => {
+    const streamingDomains = ['vidsrc', 'vidlink', 'streamingnow', '2embed', 'embed.su'];
+    if (streamingDomains.some(domain => e.url.includes(domain))) {
+        delete e.requestHeaders['referer'];
+        delete e.requestHeaders['origin'];
+    }
     e.response = (async () => {
         await configReadyPromise;
         
