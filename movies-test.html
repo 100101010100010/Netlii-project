@@ -503,69 +503,81 @@
             document.getElementById('pagination').innerHTML = '';
             document.getElementById('pagination').appendChild(d)
         }
-            let currentTvId = null;
 
-            function open(mv) {
-                t = mv;
-                pt.textContent = mv.title || mv.name;
-                pc.classList.add('show');
+        let currentTvId = null;
 
-                const tvControls = document.getElementById('tv-controls');
-                let type = mv.media_type || (mv.name ? 'tv' : 'movie');
+        function open(mv) {
+            t = mv;
+            pt.textContent = mv.title || mv.name;
+            pc.classList.add('show');
 
-                if (type === 'tv') {
-                    currentTvId = mv.id;
-                    tvControls.style.display = 'flex';
-                    setupTvSelectors(mv.id);
-                    updatePlayer('tv', mv.id, 1, 1);
-                } else {
-                    tvControls.style.display = 'none';
-                    updatePlayer('movie', mv.id);
-                }
+            const tvControls = document.getElementById('tv-controls');
+
+            // PRIORITY FIX: Explicitly check for media_type or name
+            // Search results provide 'media_type', standard lists often don't
+            let type = mv.media_type;
+            if (!type) {
+                type = mv.name ? 'tv' : 'movie';
             }
 
-            // Function to update the Iframe URL
-            function updatePlayer(type, id, s = 1, e = 1) {
-                ifm.src = type === 'tv' ?
-                    `https://vsembed.su/embed/tv?tmdb=${id}&season=${s}&episode=${e}` :
-                    `https://vsembed.su/embed/movie?tmdb=${id}`;
+            if (type === 'tv') {
+                currentTvId = mv.id;
+                tvControls.style.display = 'flex';
+                setupTvSelectors(mv.id);
+                // Default to Season 1, Episode 1 for the initial load
+                updatePlayer('tv', mv.id, 1, 1);
+            } else {
+                currentTvId = null;
+                tvControls.style.display = 'none';
+                updatePlayer('movie', mv.id);
             }
+        }
 
-            // Fetch TV details to populate Season/Episode dropdowns
-            async function setupTvSelectors(id) {
-                const sSel = document.getElementById('seasonSelect');
-                const eSel = document.getElementById('episodeSelect');
-
-                // Fetch full TV details to get number of seasons
-                const res = await fetch(`${b}/tv/${id}?api_key=${k}`);
-                const data = await res.json();
-
-                sSel.innerHTML = '';
-                data.seasons.forEach(s => {
-                    if (s.season_number === 0) return; // Skip specials usually
-                    let opt = new Object();
-                    sSel.innerHTML += `<option value="${s.season_number}">Season ${s.season_number}</option>`;
-                });
-
-                // When season changes, update episodes
-                sSel.onchange = () => updateEpisodes(id, sSel.value);
-
-                // Initial load for Season 1
-                updateEpisodes(id, 1);
+        // Function to update the Iframe URL using VidLink
+        function updatePlayer(type, id, s = 1, e = 1) {
+            // VidLink Path Structure: /type/id/season/episode
+            if (type === 'tv') {
+                ifm.src = `https://vidlink.pro/tv/${id}/${s}/${e}`;
+            } else {
+                ifm.src = `https://vidlink.pro/movie/${id}`;
             }
+        }
 
-            async function updateEpisodes(id, sNum) {
-                const eSel = document.getElementById('episodeSelect');
-                const res = await fetch(`${b}/tv/${id}/season/${sNum}?api_key=${k}`);
-                const data = await res.json();
+        // Fetch TV details to populate Season/Episode dropdowns
+        async function setupTvSelectors(id) {
+            const sSel = document.getElementById('seasonSelect');
+            const eSel = document.getElementById('episodeSelect');
 
-                eSel.innerHTML = '';
-                data.episodes.forEach(e => {
-                    eSel.innerHTML += `<option value="${e.episode_number}">Ep ${e.episode_number}: ${e.name}</option>`;
-                });
+            // Fetch full TV details to get number of seasons
+            const res = await fetch(`${b}/tv/${id}?api_key=${k}`);
+            const data = await res.json();
 
-                eSel.onchange = () => updatePlayer('tv', id, sNum, eSel.value);
-            }
+            sSel.innerHTML = '';
+            data.seasons.forEach(s => {
+                if (s.season_number === 0) return; // Skip specials usually
+                let opt = new Object();
+                sSel.innerHTML += `<option value="${s.season_number}">Season ${s.season_number}</option>`;
+            });
+
+            // When season changes, update episodes
+            sSel.onchange = () => updateEpisodes(id, sSel.value);
+
+            // Initial load for Season 1
+            updateEpisodes(id, 1);
+        }
+
+        async function updateEpisodes(id, sNum) {
+            const eSel = document.getElementById('episodeSelect');
+            const res = await fetch(`${b}/tv/${id}/season/${sNum}?api_key=${k}`);
+            const data = await res.json();
+
+            eSel.innerHTML = '';
+            data.episodes.forEach(e => {
+                eSel.innerHTML += `<option value="${e.episode_number}">Ep ${e.episode_number}: ${e.name}</option>`;
+            });
+
+            eSel.onchange = () => updatePlayer('tv', id, sNum, eSel.value);
+        }
     </script>
 
 </body>
