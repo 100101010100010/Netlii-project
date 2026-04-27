@@ -297,6 +297,11 @@ scramjet.addEventListener("request", async (e) => {
 
         for (let i = 0; i <= MAX_RETRIES; i++) {
             try {
+                if (e.url.includes('vidsrc') || e.url.includes('vidlink')) {
+                    delete e.requestHeaders['referer'];
+                    delete e.requestHeaders['origin'];
+                }
+
                 return await scramjet.client.fetch(e.url, {
                     method: e.method,
                     body: e.body,
