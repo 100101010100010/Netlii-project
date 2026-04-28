@@ -16,7 +16,7 @@ Welcome to Netlii, my flagship gaming website.
 - updated VERY frequently
   
 ## MYOL (make your own link)
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/chilicheesemonkey/netlii-games)[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/chilicheesemonkey/netlii-games)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/chilicheesemonkey/netlii-games)
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/chilicheesemonkey/netlii-games)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/chilicheesemonkey/netlii-games)
 
@@ -27,4 +27,5 @@ Welcome to Netlii, my flagship gaming website.
 - Destroyed12121 for the static scramjet code (that i modded to be NEXUS)
 - Pete Zah for the movies site that i modded
 - gointerstellar/useinterstellar (where this whole idea started)
-- and finally bubbergamesites/0K3A, my first game site
+- and finally Bubbergamesites/0K3A, my first game site
+- Cloudflare Pages for letting me host ts
