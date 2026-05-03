@@ -219,6 +219,9 @@
     </style>
 </head>
 <body>
+    <a href="/netlii-singlefile-final.html" download="Netlii.html">
+  <button type="button">Download Netlii</button>
+</a>
 
     <div class="theme-switch-wrapper">
         <span class="mode-label">Dark Mode</span>
@@ -267,10 +270,10 @@ function search(query) {
             url = 'https://' + url;
         }
         // Redirect to the Nexus embed page with the URL
-        window.location.href = `/Nexus-Proxy/embed.html#${url}`;
+        window.location.href = `/Nexus-Proxy/#${url}`;
     } else {
         // Redirect to the Nexus embed page with a Google search
-        window.location.href = `/Nexus-Proxy/embed.html#${searchEngine}${encodeURIComponent(query)}`;
+        window.location.href = `/Nexus-Proxy/#${searchEngine}${encodeURIComponent(query)}`;
     }
 }
 
