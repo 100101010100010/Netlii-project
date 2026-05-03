@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox OS</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/seven-segment" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 90px;
+            --bg-dark: #1e1e2e;
+            --bg-side: #11111b;
+            --accent: #89b4fa;
+            --text-main: #cdd6f4;
+            --text-dim: #6c7086;
+            --panel: #252526;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-dark);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        /* --- CENTERED SIDEBAR --- */
+        nav {
+            width: var(--sidebar-width);
+            background-color: var(--bg-side);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-right: 1px solid #313244;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            color: var(--text-dim);
+        }
+
+        .nav-item:hover {
+            background-color: #313244;
+            color: var(--accent);
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+            background-color: #181825;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-item i {
+            font-size: 30px;
+        }
+
+        .nav-item span {
+            font-size: 10px;
+            margin-top: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* --- MAIN VIEW --- */
+        main {
+            flex: 1;
+            display: flex;
+            position: relative;
+            background: radial-gradient(circle at center, #24273a 0%, #1e1e2e 100%);
+        }
+
+        .tool-view {
+            display: none;
+            width: 100%;
+            height: 100%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tool-view.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* --- DASHBOARD --- */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(3, 160px);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .grid-item {
+            background: #313244;
+            padding: 25px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .grid-item:hover {
+            transform: scale(1.1);
+            background: var(--accent);
+            color: #11111b;
+        }
+
+        .grid-item i {
+            font-size: 40px;
+        }
+
+        /* --- CODER TOOL --- */
+        #editor-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-nav {
+            background: var(--panel);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #333;
+        }
+
+        .editor-btn {
+            background: #333;
+            color: white;
+            border: 1px solid #444;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 13px;
+            border-radius: 4px;
+        }
+
+        .editor-btn:hover {
+            background: #444;
+        }
+
+        .editor-main {
+            flex: 1;
+            display: flex;
+        }
+
+        #code-editor {
+            flex: 1;
+            background: #1e1e1e;
+            color: #9cdcfe;
+            font-family: 'Consolas', monospace;
+            padding: 15px;
+            border: none;
+            resize: none;
+            outline: none;
+        }
+
+        #preview-frame {
+            flex: 1;
+            background: white;
+            border: none;
+        }
+
+        /* --- CALCULATOR --- */
+        .casio-case {
+            background: linear-gradient(145deg, #bdc3c7, #95a5a6);
+            padding: 25px;
+            border-radius: 8px;
+            width: 300px;
+            border: 2px solid #7f8c8d;
+        }
+
+        .lcd-screen {
+            background-color: #9ea98f;
+            padding: 10px;
+            border: 4px inset #7f8c8d;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        #calc-display {
+            width: 100%;
+            height: 45px;
+            border: none;
+            background: transparent;
+            color: #2c3e50;
+            font-family: 'Seven Segment', sans-serif;
+            font-size: 35px;
+            text-align: right;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .keypad button {
+            padding: 15px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #444;
+            background: #333;
+            color: white;
+        }
+
+        .op-key {
+            background: #555 !important;
+        }
+
+        .equal-key {
+            background: #d35400 !important;
+        }
+
+        /* --- UPDATED STICKY NOTES CSS --- */
+        #notes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 250px);
+            /* Increased size */
+            gap: 30px;
+            padding: 40px;
+            width: 100%;
+            overflow-y: auto;
+            align-content: start;
+            justify-content: center;
+        }
+
+        .note {
+            background-color: #feff9c;
+            /* Note Yellow */
+            width: 250px;
+            min-height: 250px;
+            padding: 15px;
+            box-sizing: border-box;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+            color: #333;
+            position: relative;
+            transform: rotate(-1deg);
+            transition: transform 0.2s;
+        }
+
+        /* Alternating rotation for a messy "real desk" look */
+        .note:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .note:hover {
+            transform: scale(1.05) rotate(0deg);
+            z-index: 10;
+        }
+
+        .note textarea {
+            background: transparent;
+            border: none;
+            width: 100%;
+            height: 180px;
+            resize: none;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-size: 18px;
+            outline: none;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            display: none;
+        }
+
+        .note:hover .delete-btn {
+            display: block;
+        }
+
+        .delete-btn:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* --- GAME OVER OVERLAY --- */
+        .game-over-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(17, 17, 27, 0.9);
+            border: 2px solid var(--accent);
+            padding: 20px 40px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            z-index: 200;
+            pointer-events: none;
+        }
+
+        .game-over-overlay h2 {
+            color: #f38ba8;
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .game-over-overlay p {
+            color: var(--text-main);
+            margin: 10px 0 0;
+        }
+
+        /* --- DOODLE LAYOUT FIX --- */
+        #draw.tool-view {
+            padding: 0;
+            /* Remove padding so canvas can go edge-to-edge if needed */
+        }
+
+        .doodle-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+
+        .doodle-bar {
+            background: var(--bg-side);
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 2px solid var(--panel);
+            flex-shrink: 0;
+            /* Prevents the bar from getting squashed */
+        }
+
+        #drawCanvas {
+            flex-grow: 1;
+            /* Makes canvas fill all available space below the bar */
+            background: white;
+            touch-action: none;
+            /* Critical for touch support */
+            cursor: crosshair;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav-item active" onclick="showTool('home')"><i class="material-icons">dashboard</i><span>Home</span></div>
+        <div class="nav-item" onclick="showTool('calc')"><i class="material-icons">calculate</i><span>Casio</span></div>
+        <div class="nav-item" onclick="showTool('coder')"><i class="material-icons">code</i><span>Coder</span></div>
+        <div class="nav-item" onclick="showTool('notes')"><i class="material-icons">description</i><span>Notes</span></div>
+        <div class="nav-item" onclick="showTool('draw')"><i class="material-icons">brush</i><span>Doodle</span></div>
+        <div class="nav-item" onclick="showTool('snake')"><i class="material-icons">sports_esports</i><span>Snake</span></div>
+        <div class="nav-item" onclick="showTool('tetris')"><i class="material-icons">grid_view</i><span>Tetris</span></div>
+    </nav <main>
+    <div id="gameOverUI" class="game-over-overlay">
+        <h2>GAME OVER</h2>
+        <p>Returning to Home...</p>
+    </div>
+
+    <main>
+        <section id="home" class="tool-view active">
+            <h1 style="font-size: 2.5rem; margin-bottom: 5px;">Toolbox OS</h1>
+            <p style="color: var(--text-dim); margin-bottom: 20px;">Centered Workspace & Entertainment</p>
+            <div class="grid-menu">
+                <div class="grid-item" onclick="showTool('calc')"><i class="material-icons">calculate</i>
+                    <p>Calculator</p>
+                </div>
+                <div class="grid-item" onclick="showTool('coder')"><i class="material-icons">code</i>
+                    <p>HTML Editor</p>
+                </div>
+                <div class="grid-item" onclick="showTool('notes')"><i class="material-icons">description</i>
+                    <p>Sticky Notes</p>
+                </div>
+                <div class="grid-item" onclick="showTool('draw')"><i class="material-icons">brush</i>
+                    <p>Doodle Pad</p>
+                </div>
+                <div class="grid-item" onclick="showTool('snake')"><i class="material-icons">sports_esports</i>
+                    <p>Snake</p>
+                </div>
+                <div class="grid-item" onclick="showTool('tetris')"><i class="material-icons">grid_view</i>
+                    <p>Tetris</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="calc" class="tool-view">
+            <div class="casio-case">
+                <div class="lcd-screen"><input type="text" id="calc-display" value="0" disabled></div>
+                <div class="keypad" id="calc-keypad">
+                    <button style="background:#c0392b">AC</button><button style="background:#c0392b">DEL</button><button class="op-key">%</button><button class="op-key">/</button>
+                    <button>7</button><button>8</button><button>9</button><button class="op-key">*</button>
+                    <button>4</button><button>5</button><button>6</button><button class="op-key">-</button>
+                    <button>1</button><button>2</button><button>3</button><button class="op-key">+</button>
+                    <button>0</button><button>00</button><button>.</button><button class="equal-key">=</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="coder" class="tool-view">
+            <div id="editor-container">
+                <div class="editor-nav">
+                    <label class="editor-btn">Import File <input type="file" hidden accept=".html,.txt" onchange="importFile(this)"></label>
+                    <button class="editor-btn" onclick="saveEditor()">Save (Local)</button>
+                    <button class="editor-btn" onclick="formatHTML()">Beautify</button>
+
+                    <button class="editor-btn" onclick="exportEditor()">Export .HTML</button>
+                    <button class="editor-btn" style="background:var(--accent); color:#000" onclick="openBlank()">Open about:blank</button>
+                </div>
+                <div class="editor-main">
+                    <textarea id="code-editor" spellcheck="false" oninput="updateCoder()"><h1>Welcome</h1><p>Edit me or import a file.</p></textarea>
+                    <iframe id="preview-frame"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="notes" class="tool-view">
+            <div style="width:100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid #444; box-sizing: border-box;">
+                <h1 style="margin:0;">My Sticky Notes</h1>
+                <button class="editor-btn" style="background:#27ae60; color:white; border:none; padding:10px 20px;" onclick="addNote()">+ Add Note</button>
+            </div>
+            <div id="notes-container"></div>
+        </section>
+
+        <section id="draw" class="tool-view">
+            <div class="doodle-wrapper">
+                <div class="editor-nav doodle-bar">
+                    <input type="color" id="drawColor" value="#000000">
+                    <input type="range" id="drawSize" min="1" max="50" value="5">
+
+                    <button class="editor-btn" onclick="setEraser()">
+                        <i class="material-icons" style="font-size:18px">auto_fix_normal</i> Eraser
+                    </button>
+                    <button class="editor-btn" onclick="undo()">Undo</button>
+                    <button class="editor-btn" onclick="redo()">Redo</button>
+                    <button class="editor-btn" onclick="clearDraw()">Clear</button>
+                    <button class="editor-btn" onclick="downloadDraw()">Download</button>
+                </div>
+                <canvas id="drawCanvas"></canvas>
+            </div>
+        </section>
+
+        <section id="snake" class="tool-view">
+            <h2 id="sScore">Score: 0</h2><canvas id="sCanvas" width="400" height="400"></canvas>
+        </section>
+        <section id="tetris" class="tool-view">
+            <h2 id="tScore">Score: 0</h2>
+            <canvas id="tCanvas" width="240" height="400"></canvas>
+        </section>
+    </main>
+
+    <script>
+        // --- NAVIGATION ---
+        function showTool(id) {
+            // --- FIX: Stop games from running in the background ---
+            if (typeof sLoop !== 'undefined') clearInterval(sLoop);
+            if (typeof tLoop !== 'undefined') clearInterval(tLoop);
+
+            // Hide the Game Over UI just in case it was visible
+            document.getElementById('gameOverUI').style.display = 'none';
+
+            // Existing navigation logic
+            document.querySelectorAll('.tool-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                if (item.getAttribute('onclick').includes(`'${id}'`)) item.classList.add('active');
+            });
+
+            // Initialize the tool
+            if (id === 'draw') initDoodle();
+            if (id === 'snake') initSnake();
+            if (id === 'tetris') initTetris();
+        }
+
+        // --- CALC LOGIC ---
+        let cStr = '';
+        document.getElementById('calc-keypad').addEventListener('click', e => {
+            if (e.target.tagName !== 'BUTTON') return;
+            const v = e.target.innerText;
+            const d = document.getElementById('calc-display');
+            if (v === 'AC') {
+                cStr = '';
+                d.value = '0';
+            } else if (v === 'DEL') {
+                cStr = cStr.slice(0, -1);
+                d.value = cStr || '0';
+            } else if (v === '=') {
+                try {
+                    cStr = eval(cStr).toString();
+                    d.value = cStr;
+                } catch {
+                    d.value = "ERROR";
+                    cStr = "";
+                }
+            } else {
+                cStr += v;
+                d.value = cStr;
+            }
+        });
+
+        // --- CODER LOGIC ---
+        function updateCoder() {
+            const code = document.getElementById('code-editor').value;
+            const frame = document.getElementById('preview-frame').contentDocument;
+            frame.open();
+            frame.write(code);
+            frame.close();
+        }
+
+        function importFile(input) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('code-editor').value = e.target.result;
+                updateCoder();
+            };
+            reader.readAsText(input.files[0]);
+        }
+
+        function exportEditor() {
+            const blob = new Blob([document.getElementById('code-editor').value], {
+                type: 'text/html'
+            });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'project.html';
+            a.click();
+        }
+
+        function openBlank() {
+            const w = window.open('about:blank');
+            w.document.write(document.getElementById('code-editor').value);
+        }
+
+        function formatHTML() {
+            const editor = document.getElementById('code-editor');
+            let html = editor.value;
+
+            let formatted = '';
+            let indent = '';
+            const tab = '    '; // 4 spaces
+
+            // Split into tags and content, then filter out empty lines
+            const parts = html.split(/(<[^>]*>)/).filter(p => p.trim() !== '');
+
+            parts.forEach(part => {
+                if (part.match(/^<\/\w/)) {
+                    // Closing tag: decrease indent before adding
+                    indent = indent.substring(tab.length);
+                    formatted += indent + part + '\n';
+                } else if (part.match(/^<\w[^>]*[^\/]>$/)) {
+                    // Opening tag: add then increase indent
+                    formatted += indent + part + '\n';
+                    // Don't indent for void elements like <br>, <img>, <input>
+                    if (!part.match(/^<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)/i)) {
+                        indent += tab;
+                    }
+                } else {
+                    // Text or self-closing tag
+                    formatted += indent + part.trim() + '\n';
+                }
+            });
+
+            editor.value = formatted.trim();
+            updateCoder(); // Update the iframe preview
+        }
+
+        // --- NOTES LOGIC ---
+        function addNote(text = '') {
+            const container = document.getElementById('notes-container');
+            const note = document.createElement('div');
+            note.className = 'note';
+
+            // Create the note structure
+            note.innerHTML = `
+                <textarea placeholder="Type here..." oninput="saveNotes()">${text}</textarea>
+                <button class="delete-btn" onclick="removeNote(this)">X</button>
+            `;
+            container.appendChild(note);
+            saveNotes();
+        }
+
+        function removeNote(btn) {
+            btn.parentElement.remove();
+            saveNotes();
+        }
+
+        function saveNotes() {
+            const notes = [];
+            document.querySelectorAll('.note textarea').forEach(textarea => {
+                notes.push(textarea.value);
+            });
+            localStorage.setItem('toolbox_notes', JSON.stringify(notes));
+        }
+
+        function loadNotes() {
+            const container = document.getElementById('notes-container');
+            container.innerHTML = ''; // Clear existing
+            const saved = JSON.parse(localStorage.getItem('toolbox_notes') || '[]');
+
+            if (saved.length === 0) {
+                addNote(); // Add one blank note if none exist
+            } else {
+                saved.forEach(text => addNote(text));
+            }
+        }
+
+
+        let isDrawing = false;
+        let undoStack = [];
+        let redoStack = [];
+        let lastColor = "#000000"; // Stores the color before erasing
+        const MAX_HISTORY = 20;
+
+        function initDoodle() {
+            const canvas = document.getElementById('drawCanvas');
+            const container = canvas.parentElement; // The doodle-wrapper
+            const ctx = canvas.getContext('2d');
+
+            // Set canvas resolution to match its visible size
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight - document.querySelector('.doodle-bar').offsetHeight;
+
+
+            const getPos = (e) => {
+                const r = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: clientX - r.left,
+                    y: clientY - r.top
+                };
+            };
+            const startDrawing = (e) => {
+                const colorPicker = document.getElementById('drawColor');
+                const canvas = document.getElementById('drawCanvas');
+
+                // If the user manually picked a non-white color, reset the cursor
+                if (colorPicker.value !== "#ffffff") {
+                    canvas.style.cursor = "crosshair";
+                }
+
+                isDrawing = true;
+                redoStack = [];
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+                if (e.touches) e.preventDefault();
+            };
+
+            const draw = (e) => {
+                if (!isDrawing) return;
+                const pos = getPos(e);
+                ctx.lineWidth = document.getElementById('drawSize').value;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = document.getElementById('drawColor').value;
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                if (e.touches) e.preventDefault();
+            };
+
+            const stopDrawing = () => {
+                if (isDrawing) {
+                    isDrawing = false;
+                    ctx.beginPath();
+                    saveState(); // Save to undo stack
+                    saveDoodle(); // Save to localStorage
+                }
+            };
+
+            canvas.onmousedown = startDrawing;
+            canvas.onmousemove = draw;
+            window.onmouseup = stopDrawing;
+
+            canvas.addEventListener('touchstart', startDrawing, {
+                passive: false
+            });
+            canvas.addEventListener('touchmove', draw, {
+                passive: false
+            });
+            canvas.addEventListener('touchend', stopDrawing);
+            
+            const savedDoodle = localStorage.getItem('toolbox_doodle');
+            if (savedDoodle) {
+                const img = new Image();
+                img.onload = () => ctx.drawImage(img, 0, 0);
+                img.src = savedDoodle;
+            } else {
+                ctx.fillStyle = "white"; 
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
+        // --- NEW FEATURES ---
+
+        function saveState() {
+            const canvas = document.getElementById('drawCanvas');
+            undoStack.push(canvas.toDataURL());
+            if (undoStack.length > MAX_HISTORY) undoStack.shift();
+        }
+
+        function undo() {
+            // We need at least 2 states: [The drawing, The blank canvas] 
+            // to move back from blank to drawing.
+            if (undoStack.length <= 1) return;
+
+            const canvas = document.getElementById('drawCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Move current state to redo
+            redoStack.push(undoStack.pop());
+
+            // Get the previous state
+            const prevState = undoStack[undoStack.length - 1];
+
+            const img = new Image();
+            img.onload = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+                saveDoodle(); // Keep localStorage in sync
+            };
+            img.src = prevState;
+        }
+
+        function redo() {
+            if (redoStack.length === 0) return;
+            const canvas = document.getElementById('drawCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const nextState = redoStack.pop();
+            undoStack.push(nextState);
+
+            const img = new Image();
+            img.onload = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+                saveDoodle();
+            };
+            img.src = nextState;
+        }
+
+        function setEraser() {
+            const colorPicker = document.getElementById('drawColor');
+            const canvas = document.getElementById('drawCanvas');
+
+            // If we are currently erasing (color is white), switch back to last color
+            if (colorPicker.value === "#ffffff") {
+                colorPicker.value = lastColor;
+                canvas.style.cursor = "crosshair";
+            } else {
+                // Save the current color before switching to eraser
+                lastColor = colorPicker.value;
+                colorPicker.value = "#ffffff";
+                canvas.style.cursor = "cell";
+            }
+        }
+        function saveDoodle() {
+            const canvas = document.getElementById('drawCanvas');
+            const dataURL = canvas.toDataURL(); // Converts image to string
+            localStorage.setItem('toolbox_doodle', dataURL);
+        }
+
+        function downloadDraw() {
+            const a = document.createElement('a');
+            a.href = document.getElementById('drawCanvas').toDataURL();
+            a.download = 'art.png';
+            a.click();
+        }
+
+        // Update existing clearDraw to reset stacks
+        function clearDraw() {
+            const c = document.getElementById('drawCanvas');
+            const ctx = c.getContext('2d');
+
+            // 1. SAVE the current drawing to history before clearing
+            saveState();
+
+            // 2. Clear the redo stack (since this is a new action)
+            redoStack = [];
+
+            // 3. Perform the wipe
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, c.width, c.height);
+
+            // 4. Update localStorage so the clear persists
+            saveDoodle();
+
+            // Optional: If you want 'Undo' to immediately bring it back, 
+            // we save the blank state after clearing so 'Undo' goes Blank -> Drawing
+            saveState();
+        }
+        // --- SNAKE ---
+        // --- FIXED SNAKE INITIALIZATION ---
+        let sLoop;
+
+        function initSnake() {
+            clearInterval(sLoop);
+            const cvs = document.getElementById('sCanvas');
+            const ctx = cvs.getContext('2d');
+
+            let box = 20;
+            let score = 0;
+
+            // 1. Set the initial direction to "RIGHT"
+            let d = "RIGHT";
+
+            // 2. Define the segments so they trail behind the head
+            // Head is at (10,10), Segment 1 is at (9,10), Segment 2 is at (8,10)
+            let snake = [{
+                    x: 10 * box,
+                    y: 10 * box
+                }, // Head
+                {
+                    x: 9 * box,
+                    y: 10 * box
+                }, // Body 1
+                {
+                    x: 8 * box,
+                    y: 10 * box
+                } // Body 2
+            ];
+
+            let food = {
+                x: Math.floor(Math.random() * 19) * box,
+                y: Math.floor(Math.random() * 19) * box
+            };
+
+            document.onkeydown = e => {
+                if (e.keyCode == 37 && d != "RIGHT") d = "LEFT";
+                if (e.keyCode == 38 && d != "DOWN") d = "UP";
+                if (e.keyCode == 39 && d != "LEFT") d = "RIGHT";
+                if (e.keyCode == 40 && d != "UP") d = "DOWN";
+            };
+
+            sLoop = setInterval(() => {
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, 400, 400);
+
+                snake.forEach((s, i) => {
+                    ctx.fillStyle = i == 0 ? "#2ecc71" : "#27ae60";
+                    ctx.fillRect(s.x, s.y, box, box);
+                });
+
+                ctx.fillStyle = "red";
+                ctx.fillRect(food.x, food.y, box, box);
+
+                let head = {
+                    x: snake[0].x,
+                    y: snake[0].y
+                };
+
+                if (d == "LEFT") head.x -= box;
+                if (d == "UP") head.y -= box;
+                if (d == "RIGHT") head.x += box;
+                if (d == "DOWN") head.y += box;
+
+                if (head.x == food.x && head.y == food.y) {
+                    score++;
+                    document.getElementById('sScore').innerText = "Score: " + score;
+                    food = {
+                        x: Math.floor(Math.random() * 19) * box,
+                        y: Math.floor(Math.random() * 19) * box
+                    };
+                } else {
+                    snake.pop();
+                }
+
+                // Collision Check
+                if (head.x < 0 || head.x >= 400 || head.y < 0 || head.y >= 400 || snake.some(s => s.x == head.x && s.y == head.y)) {
+                    clearInterval(sLoop);
+                    triggerGameOver(); // REPLACED ALERT
+                    return;
+                }
+
+                snake.unshift(head);
+            }, 150);
+        }
+
+        // --- OPTIMIZED TETRIS ---
+        let tLoop;
+
+        function initTetris() {
+            const cvs = document.getElementById('tCanvas');
+            const ctx = cvs.getContext('2d');
+            let score = 0; // Initialize score
+            document.getElementById('tScore').innerText = "Score: 0";
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(20, 20);
+
+            const colors = [null, '#FF0D72', '#0DC2FF', '#0DFF72', '#F538FF', '#FF8E0D', '#FFE138', '#3877FF'];
+
+            function createPiece(type) {
+                if (type === 'T') return [
+                    [0, 1, 0],
+                    [1, 1, 1],
+                    [0, 0, 0]
+                ];
+                if (type === 'I') return [
+                    [0, 2, 0, 0],
+                    [0, 2, 0, 0],
+                    [0, 2, 0, 0],
+                    [0, 2, 0, 0]
+                ];
+                if (type === 'S') return [
+                    [0, 3, 3],
+                    [3, 3, 0],
+                    [0, 0, 0]
+                ];
+                if (type === 'Z') return [
+                    [4, 4, 0],
+                    [0, 4, 4],
+                    [0, 0, 0]
+                ];
+                if (type === 'L') return [
+                    [0, 5, 0],
+                    [0, 5, 0],
+                    [0, 5, 5]
+                ];
+                if (type === 'O') return [
+                    [6, 6],
+                    [6, 6]
+                ];
+                if (type === 'J') return [
+                    [0, 7, 0],
+                    [0, 7, 0],
+                    [7, 7, 0]
+                ];
+            }
+
+            const arena = Array.from({
+                length: 20
+            }, () => Array(12).fill(0));
+            const player = {
+                pos: {
+                    x: 4,
+                    y: 0
+                },
+                matrix: createPiece('T')
+            };
+
+            function collide(arena, player) {
+                const [m, o] = [player.matrix, player.pos];
+                for (let y = 0; y < m.length; ++y) {
+                    for (let x = 0; x < m[y].length; ++x) {
+                        if (m[y][x] !== 0 && (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) return true;
+                    }
+                }
+                return false;
+            }
+
+            function merge(arena, player) {
+                player.matrix.forEach((row, y) => {
+                    row.forEach((value, x) => {
+                        if (value !== 0) arena[y + player.pos.y][x + player.pos.x] = value;
+                    });
+                });
+            }
+
+            // Clears full lines
+            function arenaSweep() {
+                let rowCount = 1;
+                outer: for (let y = arena.length - 1; y > 0; --y) {
+                    for (let x = 0; x < arena[y].length; ++x) {
+                        if (arena[y][x] === 0) continue outer;
+                    }
+                    // Row is full
+                    const row = arena.splice(y, 1)[0].fill(0);
+                    arena.unshift(row);
+                    ++y;
+
+                    score += rowCount * 10; // Add points
+                    rowCount *= 2; // Bonus for multiple lines
+                    document.getElementById('tScore').innerText = "Score: " + score;
+                }
+            }
+
+            function playerReset() {
+                const pieces = 'TISZLOJ';
+                player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
+                player.pos.y = 0;
+                player.pos.x = 4;
+                if (collide(arena, player)) {
+                    clearInterval(tLoop);
+                    arena.forEach(row => row.fill(0));
+                    score = 0;
+                    triggerGameOver();
+                }
+            }
+
+            function draw() {
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, 12, 20);
+
+                arena.forEach((row, y) => row.forEach((value, x) => {
+                    if (value) {
+                        ctx.fillStyle = colors[value];
+                        ctx.fillRect(x, y, 1, 1);
+                    }
+                }));
+
+                player.matrix.forEach((row, y) => row.forEach((value, x) => {
+                    if (value) {
+                        ctx.fillStyle = colors[value];
+                        ctx.fillRect(x + player.pos.x, y + player.pos.y, 1, 1);
+                    }
+                }));
+            }
+
+            // Faster Input Response
+            document.onkeydown = e => {
+                if (e.keyCode === 37) {
+                    player.pos.x--;
+                    if (collide(arena, player)) player.pos.x++;
+                } // Left
+                if (e.keyCode === 39) {
+                    player.pos.x++;
+                    if (collide(arena, player)) player.pos.x--;
+                } // Right
+                if (e.keyCode === 40) { // Down
+                    player.pos.y++;
+                    if (collide(arena, player)) {
+                        player.pos.y--;
+                        merge(arena, player);
+                        arenaSweep();
+                        playerReset();
+                    }
+                }
+                if (e.keyCode === 38) { // Rotate
+                    const old = player.matrix;
+                    player.matrix = player.matrix[0].map((_, i) => player.matrix.map(row => row[i]).reverse());
+                    if (collide(arena, player)) player.matrix = old;
+                }
+                draw(); // Redraw immediately on key press for speed
+            };
+
+            if (tLoop) clearInterval(tLoop);
+            // Speed: 250ms (Double the speed of the original 500ms)
+            tLoop = setInterval(() => {
+                player.pos.y++;
+                if (collide(arena, player)) {
+                    player.pos.y--;
+                    merge(arena, player);
+                    arenaSweep();
+                    playerReset();
+                }
+                draw();
+            }, 400);
+        }
+
+        window.onload = () => {
+            updateCoder();
+            loadNotes(); // This replaces addNote() to fetch saved data
+        };
+
+        function triggerGameOver() {
+            const ui = document.getElementById('gameOverUI');
+            ui.style.display = 'block';
+            setTimeout(() => {
+                ui.style.display = 'none';
+                showTool('home');
+            }, 2000); // Shows for 2 seconds before switching
+        }
+    </script>
+</body>
+
+</html>
